@@ -1,1203 +1,721 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CYCLEX — Train with your biology</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYCLEX — Cycle Intelligence for Athletes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
-  --bg: #07080a;
-  --fg: #f0efe8;
-  --fg-muted: rgba(240,239,232,0.85);
-  --fg-dim: rgba(240,239,232,0.5);
-  --accent: #E3EB92;
-  --border: rgba(240,239,232,0.08);
-  --border-mid: rgba(240,239,232,0.14);
-}
+    :root {
+      --bg: #0A0A0A;
+      --surface: #111111;
+      --accent: #C8FF00;
+      --fg: #FFFFFF;
+      --fg-muted: rgba(255,255,255,0.5);
+      --border: rgba(255,255,255,0.08);
+    }
 
-html { scroll-behavior: smooth; }
-body { background: var(--bg); color: var(--fg); font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; }
 
-/* BG — fixed orbs that shift as user scrolls */
-.bg-gradient { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-.bg-orb { position: absolute; border-radius: 50%; filter: blur(100px); will-change: transform; }
-.bg-orb-1 { width: 800px; height: 800px; background: radial-gradient(ellipse, rgba(227,235,146,0.14) 0%, transparent 65%); top: -200px; left: -200px; }
-.bg-orb-2 { width: 650px; height: 650px; background: radial-gradient(ellipse, rgba(80,180,150,0.10) 0%, transparent 65%); top: -50px; right: -180px; }
-.bg-orb-3 { width: 600px; height: 600px; background: radial-gradient(ellipse, rgba(227,235,146,0.09) 0%, transparent 65%); top: 600px; left: 100px; }
-.bg-orb-4 { width: 700px; height: 700px; background: radial-gradient(ellipse, rgba(80,160,140,0.09) 0%, transparent 65%); top: 800px; right: -100px; }
-body { position: relative; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      line-height: 1;
+    }
 
-/* NAV */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 22px 56px;
-  border-bottom: 1px solid rgba(240,239,232,0.05);
-  background: rgba(7,8,10,0.72); backdrop-filter: blur(24px);
-}
-.nav-logo { font-size: 13px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
-.nav-links { display: flex; gap: 36px; list-style: none; }
-.nav-links a { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
-.nav-links a:hover { color: var(--accent); }
-.nav-cta { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #07080a; background: var(--accent); border: none; padding: 9px 22px; cursor: pointer; font-family: inherit; font-weight: 700; transition: opacity 0.2s; }
-.nav-cta:hover { opacity: 0.85; }
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--accent);
+    }
+    .nav-cta {
+      background: var(--accent);
+      color: #000;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 10px 22px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+    }
 
-/* HERO */
-.hero {
-  position: relative; min-height: 100vh;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 140px 56px 180px;
-  text-align: center;
-  overflow: hidden;
-}
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 48px 80px;
+    }
+    .hero-badge {
+      display: inline-block;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      margin-bottom: 40px;
+    }
+    .hero h1 {
+      font-size: clamp(52px, 10vw, 120px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 0.92;
+      max-width: 900px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+    .hero-sub {
+      margin-top: 32px;
+      font-size: clamp(16px, 2vw, 20px);
+      font-weight: 400;
+      color: var(--fg-muted);
+      max-width: 520px;
+      line-height: 1.5;
+    }
+    .hero-form {
+      margin-top: 48px;
+      display: flex;
+      gap: 0;
+      max-width: 440px;
+      width: 100%;
+    }
+    .hero-form input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-right: none;
+      color: var(--fg);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      padding: 16px 20px;
+      outline: none;
+    }
+    .hero-form input::placeholder { color: var(--fg-muted); }
+    .hero-form input:focus { border-color: var(--accent); }
+    .hero-form button {
+      background: var(--accent);
+      color: #000;
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 16px 24px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .hero-form button:hover { background: #d4ff1a; }
+    .hero-note {
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--fg-muted);
+      letter-spacing: 0.02em;
+    }
 
-.orb { position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none; }
-.orb-1 { width: 800px; height: 600px; background: radial-gradient(ellipse, rgba(227,235,146,0.11) 0%, transparent 60%); top: -15%; left: -10%; animation: drift1 18s ease-in-out infinite alternate; }
-.orb-2 { width: 600px; height: 600px; background: radial-gradient(ellipse, rgba(80,160,140,0.09) 0%, transparent 60%); top: 20%; right: -10%; animation: drift2 22s ease-in-out infinite alternate; }
-.orb-3 { width: 700px; height: 500px; background: radial-gradient(ellipse, rgba(227,235,146,0.09) 0%, transparent 60%); bottom: -10%; left: 20%; animation: drift3 16s ease-in-out infinite alternate; }
-.orb-center { position: absolute; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(ellipse, rgba(227,235,146,0.06) 0%, transparent 65%); top: 50%; left: 50%; transform: translate(-50%,-50%); filter: blur(60px); pointer-events: none; }
-@keyframes drift1 { from { transform: translate(0,0) scale(1); } to { transform: translate(60px,40px) scale(1.1); } }
-@keyframes drift2 { from { transform: translate(0,0); } to { transform: translate(-40px,60px) scale(0.95); } }
-@keyframes drift3 { from { transform: translate(0,0); } to { transform: translate(30px,-50px); } }
+    /* SECTIONS */
+    section {
+      padding: 100px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    h2 {
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+    }
+    h2 em {
+      font-style: normal;
+      color: var(--accent);
+    }
 
-/* Feature pills — float around center */
-.feat-pill {
-  position: absolute; display: flex; align-items: center; gap: 12px;
-  border: 1px solid var(--border-mid); background: rgba(7,8,10,0.82); backdrop-filter: blur(16px);
-  padding: 14px 20px; font-size: 12px; letter-spacing: 0.04em; color: var(--fg);
-  white-space: nowrap; z-index: 2; cursor: default;
-  transition: border-color 0.3s, background 0.3s;
-}
-.feat-pill:hover { border-color: rgba(227,235,146,0.4); background: rgba(7,8,10,0.92); }
-.feat-pill .pill-icon { width: 30px; height: 30px; border: 1px solid rgba(227,235,146,0.25); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.feat-pill .pill-text { text-align: left; }
-.feat-pill .pill-label { font-size: 13px; font-weight: 600; color: var(--fg); margin-bottom: 2px; }
-.feat-pill .pill-sub { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-dim); }
+    /* PROBLEM */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2px;
+      margin-top: 64px;
+    }
+    .problem-card {
+      background: var(--surface);
+      padding: 40px;
+      border-top: 2px solid var(--border);
+    }
+    .problem-card:first-child { border-top-color: var(--accent); }
+    .problem-number {
+      font-size: 72px;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+    .problem-card h3 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .problem-card p {
+      font-size: 15px;
+      color: var(--fg-muted);
+      line-height: 1.6;
+    }
 
-/* Positions — triangle formation around center */
-.fp-1 { top: 18%; left: 6%; animation: float-bob 5s ease-in-out infinite alternate; animation-delay: 0s; }
-.fp-2 { top: 42%; right: 5%; animation: float-bob 5s ease-in-out infinite alternate; animation-delay: 1.4s; }
-.fp-3 { bottom: 18%; left: 8%; animation: float-bob 5s ease-in-out infinite alternate; animation-delay: 0.7s; }
+    /* WHAT CYCLEX DOES */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 64px;
+    }
+    .feature-card {
+      background: var(--surface);
+      padding: 56px 48px;
+    }
+    .feature-icon {
+      font-size: 40px;
+      margin-bottom: 32px;
+    }
+    .feature-card h3 {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .feature-card p {
+      font-size: 16px;
+      color: var(--fg-muted);
+      line-height: 1.6;
+    }
+    .feature-card.accent { background: var(--accent); }
+    .feature-card.accent h3, .feature-card.accent p { color: #000; }
 
-@keyframes float-bob { from { transform: translateY(0px); } to { transform: translateY(-10px); } }
+    /* HOW IT WORKS */
+    .steps {
+      margin-top: 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 48px;
+      background: var(--surface);
+      padding: 48px;
+    }
+    .step-num {
+      font-size: 80px;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      color: var(--accent);
+      line-height: 1;
+      min-width: 80px;
+      opacity: 0.25;
+    }
+    .step-content h3 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .step-content p {
+      font-size: 16px;
+      color: var(--fg-muted);
+      line-height: 1.6;
+      max-width: 500px;
+    }
 
-/* SVG connector canvas */
-.hero-connectors { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    /* MOCKUPS */
+    .mockups-section { text-align: center; }
+    .mockups-grid {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 64px;
+      flex-wrap: wrap;
+    }
+    .mockup-frame {
+      width: 220px;
+      height: 440px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .mockup-frame.active {
+      border-color: var(--accent);
+      transform: scale(1.05);
+    }
+    .mockup-screen {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      gap: 16px;
+    }
+    .mockup-phase {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .mockup-big {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .mockup-label {
+      font-size: 12px;
+      color: var(--fg-muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+    .mockup-bar {
+      width: 100%;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .mockup-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    .mockup-tag {
+      background: rgba(200,255,0,0.12);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
 
-.hero-content { position: relative; z-index: 2; max-width: 700px; display: flex; flex-direction: column; align-items: center; }
+    /* POSITIONING */
+    .positioning-block {
+      border-top: 2px solid var(--accent);
+      padding: 80px 0;
+      text-align: center;
+    }
+    .positioning-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 32px;
+    }
+    .positioning-statement {
+      font-size: clamp(28px, 5vw, 56px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .positioning-statement em {
+      font-style: normal;
+      color: var(--accent);
+    }
+    .positioning-sub {
+      margin-top: 32px;
+      font-size: 16px;
+      color: var(--fg-muted);
+      line-height: 1.6;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
-.hero-eyebrow {
-  font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 30px;
-  display: flex; align-items: center; gap: 14px;
-}
-.hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); opacity: 0.6; }
-.hero-eyebrow::after { content: ''; width: 32px; height: 1px; background: var(--accent); opacity: 0.6; }
+    /* TESTIMONIAL */
+    .testimonial-block {
+      background: var(--surface);
+      padding: 72px;
+      margin-top: 24px;
+    }
+    .testimonial-quote {
+      font-size: clamp(22px, 3vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 40px;
+      max-width: 700px;
+    }
+    .testimonial-quote::before { content: '"'; color: var(--accent); }
+    .testimonial-quote::after { content: '"'; color: var(--accent); }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 16px;
+      color: #000;
+    }
+    .author-info span:first-child {
+      display: block;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .author-info span:last-child {
+      font-size: 12px;
+      color: var(--fg-muted);
+      letter-spacing: 0.04em;
+    }
 
-.hero-title {
-  font-size: clamp(72px, 9vw, 140px);
-  font-weight: 700; letter-spacing: -0.04em; line-height: 0.92; margin-bottom: 28px;
-  animation: fade-up 1s cubic-bezier(0.16,1,0.3,1) both;
-}
-.hero-title .outline { -webkit-text-stroke: 1px rgba(227,235,146,0.6); color: transparent; }
-.hero-sub {
-  font-size: 19px; font-weight: 300; color: var(--fg); line-height: 1.65;
-  max-width: 480px; margin-bottom: 52px; text-wrap: pretty;
-  animation: fade-up 1s cubic-bezier(0.16,1,0.3,1) 0.2s both;
-}
-.hero-cta-row { display: flex; align-items: center; gap: 0; animation: fade-up 1s cubic-bezier(0.16,1,0.3,1) 0.35s both; justify-content: center; }
-.hero-input { background: rgba(240,239,232,0.05); border: 1px solid var(--border-mid); border-right: none; padding: 14px 22px; font-family: inherit; font-size: 13px; color: var(--fg); width: 260px; outline: none; transition: border-color 0.2s; }
-.hero-input::placeholder { color: rgba(240,239,232,0.3); }
-.hero-input:focus { border-color: var(--accent); }
-.btn-primary { background: var(--accent); color: #07080a; border: none; padding: 14px 30px; font-family: inherit; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; }
-.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-.success-msg { display: none; font-size: 13px; color: var(--accent); letter-spacing: 0.06em; }
+    /* FINAL CTA */
+    .final-cta {
+      text-align: center;
+      padding: 120px 48px;
+      border-top: 1px solid var(--border);
+    }
+    .final-cta h2 {
+      margin-bottom: 48px;
+    }
+    .waitlist-form {
+      display: flex;
+      gap: 0;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .waitlist-form input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-right: none;
+      color: var(--fg);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      padding: 18px 20px;
+      outline: none;
+    }
+    .waitlist-form input:focus { border-color: var(--accent); }
+    .waitlist-form button {
+      background: var(--accent);
+      color: #000;
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 18px 28px;
+      border: none;
+      cursor: pointer;
+    }
+    .waitlist-form button:hover { background: #d4ff1a; }
+    .final-note {
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--fg-muted);
+    }
+    .spots-badge {
+      display: inline-block;
+      margin-top: 32px;
+      border: 1px solid var(--border);
+      padding: 10px 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--fg-muted);
+      letter-spacing: 0.06em;
+    }
+    .spots-badge span { color: var(--accent); font-weight: 800; }
 
-.hero-scroll { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg-dim); z-index: 2; }
-.scroll-anim { width: 22px; height: 34px; border: 1px solid var(--border-mid); border-radius: 12px; position: relative; }
-.scroll-dot { position: absolute; width: 3px; height: 7px; background: var(--accent); border-radius: 2px; top: 5px; left: 50%; transform: translateX(-50%); animation: scroll-drop 2s ease-in-out infinite; }
-@keyframes scroll-drop { 0%,100%{top:5px;opacity:1} 80%{top:18px;opacity:0} }
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer .logo { font-weight: 900; font-size: 16px; color: var(--accent); letter-spacing: -0.03em; }
+    footer p { font-size: 12px; color: var(--fg-muted); }
 
-/* STATS BAR */
-.stats-bar { position: relative; z-index: 1; border-top: 1px solid rgba(240,239,232,0.06); border-bottom: 1px solid rgba(240,239,232,0.06); display: flex; }
-.stat-item { flex: 1; padding: 100px 52px; border-right: 1px solid rgba(240,239,232,0.06); transition: background 0.3s; }
-.stat-item:last-child { border-right: none; }
-.stat-item:hover { background: rgba(227,235,146,0.03); }
-.stat-num { font-size: clamp(44px,5vw,72px); font-weight: 700; letter-spacing: -0.04em; font-family: 'Space Mono', monospace; color: var(--fg); line-height: 1; margin-bottom: 10px; }
-.stat-num .acc { color: var(--accent); }
-.stat-label { font-size: 14px; color: var(--fg); line-height: 1.5; max-width: 200px; text-wrap: pretty; }
+    /* DIVIDER */
+    .full-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+    }
 
-/* PROBLEM */
-.problem-section {
-  position: relative; z-index: 1;
-  padding: 160px 56px;
-  overflow: hidden;
-}
-.problem-bg-text {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-  font-size: clamp(100px,18vw,260px); font-weight: 700; letter-spacing: -0.06em;
-  color: rgba(240,239,232,0.025); white-space: nowrap; pointer-events: none;
-  user-select: none; line-height: 1;
-}
-.problem-inner {
-  max-width: 1280px; width: 100%; margin: 0 auto; position: relative; z-index: 1;
-}
-
-/* Absolute scatter layout */
-.problem-float-layout {
-  position: relative;
-  height: 560px;
-  display: flex; align-items: center; justify-content: center;
-}
-.problem-center {
-  text-align: center;
-  max-width: 460px;
-  z-index: 2;
-  position: relative;
-}
-.problem-center .problem-headline {
-  font-size: clamp(36px, 4.5vw, 60px);
-  font-weight: 700; letter-spacing: -0.03em; line-height: 1.05;
-  margin-bottom: 20px;
-}
-.problem-center .problem-text {
-  font-size: 15px; color: var(--fg-muted); line-height: 1.75;
-}
-
-/* Scattered absolute cards */
-.reco-float {
-  position: absolute;
-  width: 258px;
-  animation: float-bob 5s ease-in-out infinite alternate;
-  z-index: 3;
-}
-.rf-1 { top: 2%;    left: 1%;    transform: rotate(-2deg);   animation-delay: 0s;   }
-.rf-2 { top: 0%;    right: 2%;   transform: rotate(2deg);    animation-delay: 1.4s; }
-.rf-3 { bottom: 2%; left: 3%;    transform: rotate(1.5deg);  animation-delay: 0.7s; }
-.rf-4 { bottom: 0%; right: 1%;   transform: rotate(-1.5deg); animation-delay: 2s;   }
-.reco-float .reco-card { position: static; width: 100%; }
-
-/* RECOMMENDATION CARDS */
-.reco-stack { position: relative; height: 520px; }
-
-.reco-card {
-  position: absolute;
-  background: rgba(10,11,14,0.92); backdrop-filter: blur(20px);
-  border: 1px solid var(--border-mid);
-  padding: 0;
-  overflow: hidden;
-  transition: transform 0.3s, border-color 0.3s;
-}
-.reco-card:hover { transform: translateY(-4px); border-color: rgba(227,235,146,0.25); }
-
-.reco-phase-bar { height: 2px; width: 100%; }
-
-.reco-main  { padding: 24px 26px 26px; }
-.reco-offset { padding: 18px 22px 22px; }
-.reco-badge  { padding: 18px 20px 20px; }
-
-.reco-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.reco-phase-tag {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-  border: 1px solid; padding: 4px 10px;
-}
-.reco-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
-.reco-time { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-dim); }
-
-.reco-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--fg); margin-bottom: 10px; line-height: 1.1; }
-.reco-body { font-size: 13px; color: var(--fg-muted); line-height: 1.65; margin-bottom: 22px; text-wrap: pretty; }
-
-.reco-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.reco-action {
-  display: flex; align-items: center; gap: 7px;
-  border: 1px solid var(--border); padding: 6px 12px;
-  font-size: 11px; color: var(--fg); letter-spacing: 0.04em;
-  background: rgba(240,239,232,0.03);
-}
-.reco-action-icon { width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-
-/* Nutrient bars */
-.reco-nutrient-bars { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
-.nb-row { display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--fg-muted); }
-.nb-row span:first-child { width: 46px; flex-shrink: 0; }
-.nb-track { flex: 1; height: 3px; background: rgba(240,239,232,0.08); }
-.nb-fill { height: 100%; transition: width 1s ease; }
-
-/* Readiness ring */
-.reco-badge-inner { display: flex; gap: 16px; align-items: flex-start; }
-.reco-readiness { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
-
-.problem-headline { font-size: clamp(34px,4vw,56px); font-weight: 600; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 32px; text-wrap: pretty; }
-.problem-text { font-size: 17px; color: var(--fg); line-height: 1.8; text-wrap: pretty; }
-.problem-text em { font-style: normal; color: var(--fg); }
-.pill-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
-.pill { border: 1px solid var(--border-mid); padding: 6px 14px; font-size: 11px; letter-spacing: 0.08em; color: var(--fg-muted); }
-.pill.bad { border-color: rgba(240,80,80,0.25); color: rgba(255,140,140,0.7); text-decoration: line-through; }
-.pill.good { border-color: rgba(227,235,146,0.35); color: var(--accent); }
-
-.problem-visual { position: relative; }
-
-/* WHAT IT IS */
-.what-section { position: relative; z-index: 1; padding: 0 0 140px; border-top: 1px solid rgba(240,239,232,0.05); }
-.what-full { max-width: 1200px; margin: 0 auto; padding: 0 56px; }
-.what-header { padding: 140px 0 60px; display: flex; align-items: flex-end; justify-content: space-between; gap: 60px; }
-.what-headline { font-size: clamp(38px,5vw,68px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.0; flex: 1; }
-.what-body-text { font-size: 17px; color: var(--fg); line-height: 1.78; max-width: 420px; flex: 0 0 420px; text-wrap: pretty; }
-.what-body-text em { font-style: normal; color: var(--fg); }
-
-.phase-timeline { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; border: 1px solid var(--border); }
-.phase-col { padding: 40px 28px; position: relative; overflow: hidden; border-right: 1px solid var(--border); transition: background 0.3s; }
-.phase-col:last-child { border-right: none; }
-.phase-col:hover { background: rgba(240,239,232,0.025); }
-.phase-indicator { position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-.phase-col.m .phase-indicator { background: linear-gradient(90deg, oklch(0.6 0.18 10), transparent); }
-.phase-col.f .phase-indicator { background: linear-gradient(90deg, var(--accent), transparent); }
-.phase-col.o .phase-indicator { background: linear-gradient(90deg, oklch(0.75 0.18 195), transparent); }
-.phase-col.l .phase-indicator { background: linear-gradient(90deg, oklch(0.6 0.12 280), transparent); }
-.phase-num { font-size: 10px; font-family: 'Space Mono', monospace; color: var(--fg-dim); margin-bottom: 20px; }
-.phase-name { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
-.phase-days-tag { display: inline-block; font-size: 10px; letter-spacing: 0.1em; border: 1px solid var(--border); padding: 3px 8px; color: var(--fg-dim); margin-bottom: 18px; }
-.phase-desc-txt { font-size: 14px; color: var(--fg); line-height: 1.65; }
-.energy-bar-wrap { margin-top: 24px; }
-.energy-label { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-dim); margin-bottom: 6px; }
-.energy-track { height: 2px; background: rgba(240,239,232,0.08); }
-.energy-fill { height: 100%; }
-.phase-col.m .energy-fill { background: oklch(0.6 0.18 10); width: 28%; }
-.phase-col.f .energy-fill { background: var(--accent); width: 72%; }
-.phase-col.o .energy-fill { background: oklch(0.75 0.18 195); width: 100%; }
-.phase-col.l .energy-fill { background: oklch(0.6 0.12 280); width: 52%; }
-
-/* ATHLETE SECTION — image + text */
-.athlete-section { position: relative; z-index: 1; border-top: 1px solid rgba(240,239,232,0.05); display: grid; grid-template-columns: 1fr 1fr; }
-.athlete-img-col { position: relative; overflow: hidden; border-right: 1px solid var(--border); background: #0d0d0f; align-self: stretch; }
-.athlete-img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; opacity: 0.75; display: block; }
-.athlete-overlay { position: absolute; inset: 0; background: linear-gradient(to right, transparent 60%, var(--bg) 100%), linear-gradient(to top, var(--bg) 0%, transparent 30%); }
-.athlete-img-tint { position: absolute; inset: 0; background: rgba(227,235,146,0.04); }
-.no-img-placeholder {
-  position: absolute; inset: 0;
-  background: repeating-linear-gradient(-45deg, rgba(240,239,232,0.015) 0px, rgba(240,239,232,0.015) 1px, transparent 1px, transparent 14px);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
-}
-
-/* Floating metric cards */
-.metric-float {
-  position: absolute; border: 1px solid var(--border-mid); background: rgba(7,8,10,0.88);
-  backdrop-filter: blur(16px); padding: 16px 20px;
-  animation: float-bob 5s ease-in-out infinite alternate; z-index: 2;
-}
-.mf-1 { top: 18%; left: 8%; animation-delay: 0s; }
-.mf-2 { top: 45%; right: 6%; animation-delay: 1.5s; }
-.mf-3 { bottom: 16%; left: 10%; animation-delay: 0.9s; }
-.mf-val { font-size: 28px; font-weight: 700; font-family: 'Space Mono', monospace; color: var(--fg); line-height: 1; }
-.mf-val .acc { color: var(--accent); }
-.mf-key { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-dim); margin-top: 5px; }
-.mf-delta { font-size: 12px; margin-top: 7px; font-weight: 500; }
-.mf-delta.pos { color: var(--accent); }
-.mf-delta.neg { color: oklch(0.65 0.18 10); }
-
-.athlete-text-col { padding: 100px 72px; display: flex; flex-direction: column; justify-content: center; }
-.athlete-text-col .big-label { font-size: clamp(42px,5vw,72px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 24px; }
-.athlete-text-col .big-sub { font-size: 17px; color: var(--fg); line-height: 1.8; max-width: 420px; margin-bottom: 52px; text-wrap: pretty; }
-.athlete-text-col em { font-style: normal; color: var(--fg); }
-.checklist { display: flex; flex-direction: column; gap: 16px; }
-.check-item { display: flex; align-items: flex-start; gap: 16px; }
-.check-dot { width: 20px; height: 20px; border: 1px solid var(--accent); flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
-.check-txt { font-size: 16px; color: var(--fg); line-height: 1.5; }
-.check-txt strong { color: var(--fg); font-weight: 600; display: block; margin-bottom: 2px; }
-
-/* SECOND ATHLETE / INSPIRATION STRIP */
-.inspire-strip {
-  position: relative; z-index: 1;
-  border-top: 1px solid var(--border);
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  height: 420px;
-  margin: 200px 0;
-}
-.inspire-cell { position: relative; overflow: hidden; border-right: 1px solid var(--border); }
-.inspire-cell:last-child { border-right: none; }
-.inspire-img { width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: 0.6; display: block; transition: opacity 0.5s, transform 0.5s; }
-.inspire-cell:hover .inspire-img { opacity: 0.8; transform: scale(1.03); }
-.inspire-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(7,8,10,0.9) 0%, transparent 50%); }
-.inspire-label {
-  position: absolute; bottom: 24px; left: 24px;
-  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-muted);
-}
-.inspire-label strong { display: block; font-size: 16px; font-weight: 600; color: var(--fg); letter-spacing: -0.01em; margin-bottom: 4px; text-transform: none; letter-spacing: 0; }
-.inspire-phase-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
-
-/* FEATURES */
-.features-section { position: relative; z-index: 1; padding: 160px 56px; border-top: 1px solid rgba(240,239,232,0.05); }
-.features-inner { max-width: 1200px; margin: 0 auto; }
-.features-header { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 100px; align-items: end; }
-.features-title { font-size: clamp(38px,5vw,68px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.0; }
-.features-subtitle { font-size: 17px; color: var(--fg); line-height: 1.75; }
-.features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
-.feat-card { background: var(--bg); padding: 52px 40px; position: relative; overflow: hidden; transition: background 0.3s; }
-.feat-card:hover { background: rgba(240,239,232,0.02); }
-.feat-card::after { content: attr(data-num); position: absolute; bottom: -20px; right: 10px; font-size: 130px; font-weight: 700; letter-spacing: -0.06em; color: rgba(240,239,232,0.03); line-height: 1; font-family: 'Space Mono', monospace; pointer-events: none; }
-.feat-num { font-size: 10px; font-family: 'Space Mono', monospace; color: var(--fg-dim); margin-bottom: 44px; }
-.feat-icon-wrap { width: 40px; height: 40px; border: 1px solid rgba(227,235,146,0.3); display: flex; align-items: center; justify-content: center; margin-bottom: 28px; }
-.feat-title { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 16px; line-height: 1.2; }
-.feat-body { font-size: 15px; color: var(--fg); line-height: 1.75; text-wrap: pretty; }
-
-/* POSITIONING — much more visible */
-.pos-section {
-  position: relative; z-index: 1;
-  padding: 160px 56px;
-  text-align: center; overflow: hidden;
-  border-top: 1px solid rgba(240,239,232,0.05);
-  background: #0b0c0e;
-}
-.pos-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(227,235,146,0.14) 0%, transparent 60%); filter: blur(80px); pointer-events: none; }
-.pos-inner { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; }
-.pos-not-tag {
-  display: inline-flex; align-items: center; gap: 14px;
-  font-size: 18px; letter-spacing: 0.04em;
-  color: rgba(240,239,232,0.75); margin-bottom: 40px;
-  border: 1px solid rgba(240,239,232,0.25); padding: 12px 28px;
-  background: rgba(240,239,232,0.06);
-}
-.pos-not-tag .strike-inner {
-  text-decoration: line-through;
-  text-decoration-color: rgba(240,239,232,0.4);
-  text-decoration-thickness: 1px;
-}
-.pos-main {
-  font-size: clamp(56px,9vw,120px); font-weight: 700;
-  letter-spacing: -0.04em; line-height: 0.92; color: var(--fg);
-}
-.pos-main .acc { color: var(--accent); }
-.pos-main .dim-word { color: rgba(240,239,232,0.8); font-weight: 300; }
-
-/* QUOTE */
-.quote-wrapper { border-top: 1px solid rgba(240,239,232,0.05); position: relative; z-index: 1; }
-.quote-section { max-width: 1200px; margin: 0 auto; padding: 140px 56px; display: grid; grid-template-columns: 1fr auto; gap: 80px; align-items: center; }
-.quote-text { font-size: clamp(22px,3vw,36px); font-weight: 400; letter-spacing: -0.015em; line-height: 1.4; text-wrap: pretty; max-width: 640px; color: var(--fg); }
-.quote-text::before { content: '"'; color: var(--accent); font-size: 1.3em; line-height: 0; vertical-align: -0.3em; margin-right: 4px; }
-.quote-attr { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-dim); margin-top: 28px; }
-.readiness-card { border: 1px solid var(--border); background: rgba(240,239,232,0.02); padding: 24px; width: 280px; }
-.rc-label { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-dim); margin-bottom: 20px; }
-.rc-bars { display: flex; align-items: flex-end; gap: 4px; height: 80px; }
-.rc-bar { flex: 1; }
-.rc-phases { display: flex; margin-top: 12px; border-top: 1px solid var(--border); padding-top: 8px; }
-.rc-phase { flex: 1; font-size: 8px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-dim); text-align: center; }
-.rc-phase.wide { flex: 2.5; }
-.rc-current { margin-top: 14px; border: 1px solid rgba(227,235,146,0.25); padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; }
-.rc-cur-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-dim); }
-.rc-cur-val { font-size: 16px; font-weight: 700; color: var(--accent); font-family: 'Space Mono', monospace; }
-
-/* CTA */
-.cta-section { position: relative; z-index: 1; padding: 180px 56px; text-align: center; overflow: hidden; border-top: 1px solid rgba(240,239,232,0.05); }
-.cta-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 800px; height: 500px; background: radial-gradient(ellipse, rgba(227,235,146,0.12) 0%, transparent 60%); filter: blur(100px); pointer-events: none; }
-.cta-inner { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; }
-.cta-eyebrow { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 28px; }
-.cta-title { font-size: clamp(36px,5vw,62px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.05; margin-bottom: 20px; }
-.cta-sub { font-size: 17px; color: var(--fg); margin-bottom: 52px; }
-.cta-row { display: flex; justify-content: center; max-width: 460px; margin: 0 auto; }
-.cta-input { flex: 1; background: rgba(240,239,232,0.05); border: 1px solid var(--border-mid); border-right: none; padding: 15px 22px; font-family: inherit; font-size: 13px; color: var(--fg); outline: none; transition: border-color 0.2s; }
-.cta-input::placeholder { color: rgba(240,239,232,0.3); }
-.cta-input:focus { border-color: var(--accent); }
-.cta-note { font-size: 12px; color: var(--fg-dim); letter-spacing: 0.06em; margin-top: 18px; }
-
-/* FOOTER */
-footer { border-top: 1px solid rgba(240,239,232,0.06); padding: 28px 56px; display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1; }
-.footer-logo { font-size: 12px; letter-spacing: 0.2em; font-weight: 700; text-transform: uppercase; }
-.footer-meta { font-size: 12px; color: var(--fg-dim); letter-spacing: 0.06em; }
-
-/* ANIMATIONS */
-@keyframes fade-up { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-left { opacity: 0; transform: translateX(-32px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
-.reveal-left.visible { opacity: 1; transform: translateX(0); }
-.reveal-right { opacity: 0; transform: translateX(32px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
-.reveal-right.visible { opacity: 1; transform: translateX(0); }
-.d1{transition-delay:0.1s}.d2{transition-delay:0.22s}.d3{transition-delay:0.34s}.d4{transition-delay:0.46s}
-
-/* SECTION EYEBROW — lime, uppercase, dash prefix */
-.section-eyebrow {
-  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 28px; font-weight: 500;
-  display: flex; align-items: center; gap: 14px;
-}
-.section-eyebrow::before {
-  content: '——';
-  color: var(--accent); opacity: 0.6;
-  letter-spacing: -0.1em; font-size: 14px; flex-shrink: 0;
-}
-
-
-/* TRAIN IN SYNC SECTION */
-.sync-section {
-  position: relative; z-index: 1;
-  display: grid; grid-template-columns: 1fr 1fr;
-  min-height: 600px;
-  border-top: 1px solid rgba(240,239,232,0.05);
-  border-bottom: 1px solid rgba(240,239,232,0.05);
-  margin: 160px 0;
-}
-
-.sync-img-col {
-  position: relative; overflow: hidden; background: #050607;
-}
-.sync-img {
-  width: 100%; height: 100%; object-fit: cover;
-  object-position: center 20%; opacity: 0.85; display: block;
-}
-.sync-img-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to right, transparent 55%, var(--bg) 100%);
-}
-
-.sync-text-col {
-  background: var(--bg);
-  padding: 72px 72px 72px 60px;
-  display: flex; flex-direction: column; justify-content: center;
-  position: relative;
-}
-
-.sync-eyebrow {
-  position: absolute; top: 40px; right: 48px;
-  display: flex; align-items: center; gap: 12px;
-  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--accent);
-}
-.sync-eyebrow::before { content: ''; flex: 1; width: 60px; height: 1px; background: var(--accent); opacity: 0.5; }
-.sync-eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
-
-.sync-headline {
-  font-size: clamp(52px, 7vw, 92px);
-  font-weight: 800; letter-spacing: -0.04em; line-height: 0.92;
-  text-transform: uppercase; margin-bottom: 24px;
-}
-.sync-headline .lime { color: var(--accent); }
-
-.sync-sub {
-  font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--fg-muted); line-height: 1.8; margin-bottom: 40px;
-}
-
-/* Phase card */
-.sync-phase-card {
-  display: flex; align-items: center; gap: 18px;
-  border: 1px solid var(--border-mid);
-  background: rgba(240,239,232,0.03);
-  padding: 16px 20px; margin-bottom: 48px;
-  max-width: 340px; cursor: pointer;
-  transition: border-color 0.2s;
-}
-
-.sync-phase-icon {
-  width: 44px; height: 44px; border: 1px solid var(--border-mid);
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.sync-phase-info { flex: 1; }
-.sync-phase-name { font-size: 13px; font-weight: 700; color: var(--fg); letter-spacing: 0.04em; margin-bottom: 4px; }
-.sync-phase-meta { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-dim); line-height: 1.6; }
-.sync-phase-arrow { color: var(--fg-muted); font-size: 16px; }
-
-/* Feature icons row */
-.sync-features {
-  display: flex; gap: 32px; flex-wrap: wrap;
-}
-.sync-feat {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
-}
-.sync-feat-icon {
-  color: var(--fg-muted); opacity: 0.7;
-}
-.sync-feat-label {
-  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--fg-dim); line-height: 1.4;
-}
-
-</style>
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      section { padding: 72px 24px; }
+      .hero { padding: 100px 24px 64px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .step { flex-direction: column; gap: 16px; }
+      .step-num { font-size: 48px; min-width: auto; }
+      .testimonial-block { padding: 48px 32px; }
+      .final-cta { padding: 80px 24px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+      .hero-form, .waitlist-form { flex-direction: column; }
+      .hero-form input, .waitlist-form input { border-right: 1px solid var(--border); border-bottom: none; }
+      .mockup-frame { width: 180px; height: 360px; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="bg-gradient">
-  <div class="bg-orb bg-orb-1" id="orb1"></div>
-  <div class="bg-orb bg-orb-2" id="orb2"></div>
-  <div class="bg-orb bg-orb-3" id="orb3"></div>
-  <div class="bg-orb bg-orb-4" id="orb4"></div>
-</div>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">CYCLEX</div>
+    <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+  </nav>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">CycleX</div>
-  <ul class="nav-links">
-    <li><a href="#problem">Problem</a></li>
-    <li><a href="#what">What it is</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#cta">Waitlist</a></li>
-  </ul>
-  <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
-</nav>
+  <!-- HERO -->
+  <section class="hero" style="max-width:100%; padding-left:48px; padding-right:48px;">
+    <div class="hero-badge">Cycle Intelligence · Beta 2025</div>
+    <h1>Train with your<br><em>biology,</em><br>not against it.</h1>
+    <p class="hero-sub">CYCLEX reads your hormonal phase and adapts your existing training plan — intensity, weights, reps, and session order — in real time.</p>
+    <form class="hero-form" id="hero-form" onsubmit="handleSubmit(event, 'hero-form')">
+      <input type="email" placeholder="your@email.com" required>
+      <button type="submit">Get Early Access</button>
+    </form>
+    <p class="hero-note">No spam. No period emojis. Just performance.</p>
+  </section>
 
-<!-- HERO -->
-<section class="hero" id="hero-section">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-  <div class="orb-center"></div>
+  <div class="full-divider"></div>
 
-  <!-- SVG connector lines — drawn by JS after layout -->
-  <svg class="hero-connectors" id="hero-svg" viewBox="0 0 1440 900" preserveAspectRatio="none">
-    <defs>
-      <marker id="dot-end" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="6" markerHeight="6">
-        <circle cx="3" cy="3" r="2.5" fill="#E3EB92" opacity="0.6"/>
-      </marker>
-      <marker id="dot-start" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="6" markerHeight="6">
-        <circle cx="3" cy="3" r="2" fill="rgba(240,239,232,0.3)"/>
-      </marker>
-    </defs>
-    <!-- Lines drawn by JS -->
-    <line id="conn-1" stroke="rgba(227,235,146,0.18)" stroke-width="1" stroke-dasharray="4 6" marker-start="url(#dot-start)" marker-end="url(#dot-end)"/>
-    <line id="conn-2" stroke="rgba(227,235,146,0.18)" stroke-width="1" stroke-dasharray="4 6" marker-start="url(#dot-start)" marker-end="url(#dot-end)"/>
-    <line id="conn-3" stroke="rgba(227,235,146,0.18)" stroke-width="1" stroke-dasharray="4 6" marker-start="url(#dot-start)" marker-end="url(#dot-end)"/>
-  </svg>
-
-  <!-- Feature pill 1 — top left -->
-  <div class="feat-pill fp-1" id="fp1">
-    <div class="pill-icon">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <circle cx="7" cy="7" r="5.5" stroke="#E3EB92" stroke-width="1" opacity="0.8"/>
-        <circle cx="7" cy="7" r="2" fill="#E3EB92" opacity="0.6"/>
-        <line x1="7" y1="1" x2="7" y2="3" stroke="#E3EB92" stroke-width="1" opacity="0.5"/>
-        <line x1="7" y1="11" x2="7" y2="13" stroke="#E3EB92" stroke-width="1" opacity="0.5"/>
-        <line x1="1" y1="7" x2="3" y2="7" stroke="#E3EB92" stroke-width="1" opacity="0.5"/>
-        <line x1="11" y1="7" x2="13" y2="7" stroke="#E3EB92" stroke-width="1" opacity="0.5"/>
-      </svg>
-    </div>
-    <div class="pill-text">
-      <div class="pill-label">Know your phase.</div>
-      <div class="pill-sub">Hormonal intelligence</div>
-    </div>
-  </div>
-
-  <!-- Feature pill 2 — right center -->
-  <div class="feat-pill fp-2" id="fp2">
-    <div class="pill-icon">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <polyline points="1,11 4,6 7,8 10,3 13,5" stroke="#E3EB92" stroke-width="1.2" fill="none" opacity="0.9"/>
-        <circle cx="10" cy="3" r="2" fill="#E3EB92" opacity="0.5"/>
-      </svg>
-    </div>
-    <div class="pill-text">
-      <div class="pill-label">Train smarter.</div>
-      <div class="pill-sub">Phase-matched workouts</div>
-    </div>
-  </div>
-
-  <!-- Feature pill 3 — bottom left -->
-  <div class="feat-pill fp-3" id="fp3">
-    <div class="pill-icon">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <rect x="1" y="9" width="2.5" height="4" fill="#E3EB92" opacity="0.35"/>
-        <rect x="5.5" y="6" width="2.5" height="7" fill="#E3EB92" opacity="0.6"/>
-        <rect x="10" y="2" width="2.5" height="11" fill="#E3EB92" opacity="0.85"/>
-      </svg>
-    </div>
-    <div class="pill-text">
-      <div class="pill-label">Spot your patterns.</div>
-      <div class="pill-sub">AI-powered insights</div>
-    </div>
-  </div>
-
-  <!-- Centered hero content -->
-  <div class="hero-content">
-    <p class="hero-eyebrow">Cycle Intelligence · Performance</p>
-    <h1 class="hero-title">CYCLE<span class="outline">X</span></h1>
-    <p class="hero-sub">Train with your biology.<br>Your hormones change every week.<br>Your training should too.</p>
-    <div class="hero-cta-row" id="hero-form">
-      <input class="hero-input" type="email" id="hero-email" placeholder="your@email.com">
-      <button class="btn-primary" onclick="handleHeroSubmit()">Join the Waitlist</button>
-    </div>
-    <p class="success-msg" id="hero-success">✓ You're on the list. We'll be in touch.</p>
-  </div>
-
-  <div class="hero-scroll">
-    <div class="scroll-anim"><div class="scroll-dot"></div></div>
-    Scroll
-  </div>
-</section>
-
-<!-- STATS BAR -->
-<div class="stats-bar">
-  <div class="stat-item reveal">
-    <div class="stat-num"><span class="acc">6</span>%</div>
-    <div class="stat-label">of sports science research uses female participants</div>
-  </div>
-  <div class="stat-item reveal d1">
-    <div class="stat-num"><span class="acc">7</span>×</div>
-    <div class="stat-label">hormonal variance across a single menstrual cycle</div>
-  </div>
-  <div class="stat-item reveal d2">
-    <div class="stat-num"><span class="acc">28</span></div>
-    <div class="stat-label">days of untapped performance data every cycle</div>
-  </div>
-  <div class="stat-item reveal d3">
-    <div class="stat-num"><span class="acc">4</span></div>
-    <div class="stat-label">distinct hormonal phases that change everything</div>
-  </div>
-</div>
-
-<!-- TRAIN IN SYNC -->
-<div class="sync-section reveal">
-
-  <div class="sync-img-col">
-    <img class="sync-img"
-      src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=900&q=85&auto=format&fit=crop&crop=top"
-      alt="Woman athlete training"
-      onerror="this.style.background='#0d0d0f'">
-    <div class="sync-img-overlay"></div>
-  </div>
-
-  <div class="sync-text-col">
-    <div class="sync-eyebrow">
-      <div class="sync-eyebrow-dot"></div>
-      Cycle Intelligence
-    </div>
-
-    <h2 class="sync-headline">
-      Train<br>in sync<br><span class="lime">with you.</span>
-    </h2>
-    <p class="sync-sub">Your hormones change every week.<br>Your training should too.</p>
-
-    <div class="sync-phase-card">
-      <div class="sync-phase-icon">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <circle cx="10" cy="10" r="7" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 2"/>
-          <circle cx="10" cy="10" r="3" fill="var(--accent)" opacity="0.5"/>
-        </svg>
+  <!-- PROBLEM -->
+  <section>
+    <p class="section-label">The Problem</p>
+    <h2>Built for men.<br><em>Used by everyone.</em></h2>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-number">01</div>
+        <h3>Generic programming ignores female physiology</h3>
+        <p>Every major training app assumes a 24-hour hormonal cycle. Women operate on a 28-day cycle with four distinct phases — each one changing strength, recovery, and energy capacity.</p>
       </div>
-      <div class="sync-phase-info">
-        <div class="sync-phase-name">Luteal Phase</div>
-        <div class="sync-phase-meta">Focus: Strength<br>Intensity: Moderate</div>
+      <div class="problem-card">
+        <div class="problem-number">02</div>
+        <h3>You're fighting your own biology every week</h3>
+        <p>Pushing max effort in follicular is different from pushing the same load in luteal. Ignoring that gap leads to overtraining, stalled progress, and unnecessary fatigue.</p>
       </div>
-
-    </div>
-
-    <div class="sync-features">
-      <div class="sync-feat">
-        <div class="sync-feat-icon">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.2"/>
-            <circle cx="11" cy="11" r="3" stroke="currentColor" stroke-width="1.2"/>
-          </svg>
-        </div>
-        <div class="sync-feat-label">Cycle<br>Aware</div>
-      </div>
-      <div class="sync-feat">
-        <div class="sync-feat-icon">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-            <rect x="2"  y="14" width="3" height="6" fill="currentColor" opacity="0.4"/>
-            <rect x="7"  y="10" width="3" height="10" fill="currentColor" opacity="0.6"/>
-            <rect x="12" y="6"  width="3" height="14" fill="currentColor" opacity="0.8"/>
-            <rect x="17" y="2"  width="3" height="18" fill="currentColor"/>
-          </svg>
-        </div>
-        <div class="sync-feat-label">Training<br>Optimized</div>
-      </div>
-      <div class="sync-feat">
-        <div class="sync-feat-icon">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-            <path d="M11 18s-7-4.5-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 18 9c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.2" fill="none"/>
-          </svg>
-        </div>
-        <div class="sync-feat-label">Recovery<br>Smarter</div>
-      </div>
-      <div class="sync-feat">
-        <div class="sync-feat-icon">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-            <polyline points="4,16 9,8 13,12 18,4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="sync-feat-label">Performance<br>Stronger</div>
+      <div class="problem-card">
+        <div class="problem-number">03</div>
+        <h3>Period trackers don't talk to your training</h3>
+        <p>Flo and Clue track symptoms. They don't adapt your program. CYCLEX does the one thing they don't: connects your cycle data to your actual workout plan.</p>
       </div>
     </div>
-  </div>
+  </section>
 
-</div>
+  <div class="full-divider"></div>
 
-<!-- PROBLEM -->
-<section class="problem-section" id="problem">
-  <div class="problem-bg-text">BIOLOGY</div>
-  <div class="problem-inner">
-    <div class="problem-float-layout">
-
-      <!-- CENTER TEXT -->
-      <div class="problem-center reveal">
-        <div class="section-eyebrow" style="justify-content:center">The Problem</div>
-        <h2 class="problem-headline">Most training apps ignore half your physiology.</h2>
-        <p class="problem-text">They're built on data from male bodies. They tell you to push through. They have no idea what your hormones are doing.<br><br><em>You do. We just help you use it.</em></p>
-      </div>
-
-      <!-- TOP LEFT: Push hard -->
-      <div class="reco-float rf-1">
-        <div class="reco-card reco-main">
-          <div class="reco-phase-bar" style="background:linear-gradient(90deg,#E3EB92,transparent)"></div>
-          <div class="reco-top">
-            <div class="reco-phase-tag" style="border-color:rgba(227,235,146,0.3);color:#E3EB92">
-              <span class="reco-dot" style="background:#E3EB92"></span>Follicular · Day 9
-            </div>
-            <div class="reco-time">Today</div>
-          </div>
-          <div class="reco-title">Push hard today.</div>
-          <div class="reco-body">Estrogen is rising — your strength, focus, and recovery speed are all up. Go heavy.</div>
-          <div class="reco-actions">
-            <div class="reco-action">
-              <div class="reco-action-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><line x1="1" y1="9" x2="11" y2="9" stroke="#E3EB92" stroke-width="1.2"/><line x1="1" y1="6" x2="11" y2="6" stroke="#E3EB92" stroke-width="1.2" opacity="0.5"/><line x1="1" y1="3" x2="8" y2="3" stroke="#E3EB92" stroke-width="1.2" opacity="0.25"/></svg></div>
-              <span>Strength training</span>
-            </div>
-            <div class="reco-action">
-              <div class="reco-action-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#E3EB92" stroke-width="1"/><path d="M6 3v3l2 1.5" stroke="#E3EB92" stroke-width="1" stroke-linecap="round"/></svg></div>
-              <span>60–75 min</span>
-            </div>
-            <div class="reco-action">
-              <div class="reco-action-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="1,9 4,5 6,7 9,3 11,4" stroke="#E3EB92" stroke-width="1.2" fill="none"/></svg></div>
-              <span>High intensity OK</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TOP RIGHT: Eat more -->
-      <div class="reco-float rf-2">
-        <div class="reco-card reco-offset">
-          <div class="reco-phase-bar" style="background:linear-gradient(90deg,oklch(0.6 0.12 280),transparent)"></div>
-          <div class="reco-top">
-            <div class="reco-phase-tag" style="border-color:rgba(150,120,220,0.3);color:oklch(0.75 0.12 280)">
-              <span class="reco-dot" style="background:oklch(0.6 0.12 280)"></span>Luteal · Fuel mode
-            </div>
-          </div>
-          <div class="reco-title" style="font-size:16px">Eat more today.</div>
-          <div class="reco-body" style="font-size:12px">Progesterone raises your metabolic rate. Add 200–300 kcal from complex carbs.</div>
-          <div class="reco-nutrient-bars">
-            <div class="nb-row"><span>Carbs</span><div class="nb-track"><div class="nb-fill" style="width:80%;background:#E3EB92"></div></div><span style="color:#E3EB92">↑</span></div>
-            <div class="nb-row"><span>Protein</span><div class="nb-track"><div class="nb-fill" style="width:60%;background:rgba(240,239,232,0.4)"></div></div></div>
-            <div class="nb-row"><span>Fat</span><div class="nb-track"><div class="nb-fill" style="width:45%;background:rgba(240,239,232,0.25)"></div></div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- BOTTOM LEFT: Rest & restore -->
-      <div class="reco-float rf-3">
-        <div class="reco-card reco-badge">
-          <div class="reco-phase-bar" style="background:linear-gradient(90deg,oklch(0.6 0.18 10),transparent)"></div>
-          <div class="reco-badge-inner">
-            <div>
-              <div class="reco-phase-tag" style="border-color:rgba(220,80,80,0.3);color:oklch(0.7 0.18 10);margin-bottom:10px">
-                <span class="reco-dot" style="background:oklch(0.6 0.18 10)"></span>Menstrual · Day 2
-              </div>
-              <div class="reco-title" style="font-size:16px">Rest &amp; restore.</div>
-              <div style="font-size:11px;color:var(--fg-muted)">Gentle movement only. Your body is doing important work.</div>
-            </div>
-            <div class="reco-readiness">
-              <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
-                <circle cx="27" cy="27" r="22" stroke="rgba(240,239,232,0.08)" stroke-width="3"/>
-                <circle cx="27" cy="27" r="22" stroke="oklch(0.6 0.18 10)" stroke-width="3" stroke-dasharray="138 138" stroke-dashoffset="96" stroke-linecap="round" transform="rotate(-90 27 27)" opacity="0.8"/>
-                <text x="27" y="30" text-anchor="middle" font-family="Space Mono" font-size="11" font-weight="700" fill="var(--fg)">31%</text>
-              </svg>
-              <div style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--fg-dim);text-align:center;margin-top:4px">Readiness</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- BOTTOM RIGHT: Hit a PR -->
-      <div class="reco-float rf-4">
-        <div class="reco-card reco-main">
-          <div class="reco-phase-bar" style="background:linear-gradient(90deg,oklch(0.75 0.18 195),transparent)"></div>
-          <div class="reco-top">
-            <div class="reco-phase-tag" style="border-color:rgba(80,200,180,0.3);color:oklch(0.75 0.18 195)">
-              <span class="reco-dot" style="background:oklch(0.75 0.18 195)"></span>Ovulatory · Peak
-            </div>
-            <div class="reco-time">Day 14</div>
-          </div>
-          <div class="reco-title" style="font-size:17px">Hit a PR today.</div>
-          <div class="reco-body" style="font-size:12px;margin-bottom:14px">Estrogen is at its highest. Your best chance this cycle for a personal record.</div>
-          <div class="reco-actions" style="gap:6px">
-            <div class="reco-action" style="border-color:rgba(80,200,180,0.25)"><span style="color:oklch(0.75 0.18 195)">↑</span> Max strength</div>
-            <div class="reco-action" style="border-color:rgba(80,200,180,0.25)"><span style="color:oklch(0.75 0.18 195)">★</span> PR window</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- WHAT IT IS -->
-<section class="what-section" id="what">
-  <div class="what-full">
-    <div class="what-header">
-      <div class="reveal-left">
-        <div class="section-eyebrow">What it is</div>
-        <h2 class="what-headline">A cycle intelligence<br>app for people<br>who train.</h2>
-      </div>
-      <p class="what-body-text reveal-right">
-        CYCLEX reads your hormonal phase — <em>Menstrual, Follicular, Ovulatory, Luteal</em> — and tells you exactly how to train, recover, and eat. Every day. Based on your body, not a generic plan.
-      </p>
-    </div>
-    <div class="phase-timeline reveal">
-      <div class="phase-col m">
-        <div class="phase-indicator"></div>
-        <div class="phase-num">PHASE 01 / 18%</div>
-        <div class="phase-name">Menstrual</div>
-        <div class="phase-days-tag">Day 01–05</div>
-        <p class="phase-desc-txt">Low estrogen + progesterone. Prioritize mobility, breathwork, and light movement. Honor the reset.</p>
-        <div class="energy-bar-wrap">
-          <div class="energy-label">Energy level</div>
-          <div class="energy-track"><div class="energy-fill"></div></div>
-        </div>
-      </div>
-      <div class="phase-col f">
-        <div class="phase-indicator"></div>
-        <div class="phase-num">PHASE 02 / 29%</div>
-        <div class="phase-name">Follicular</div>
-        <div class="phase-days-tag">Day 06–13</div>
-        <p class="phase-desc-txt">Rising estrogen. Energy climbs. Ideal for strength building, new skills, higher intensity work.</p>
-        <div class="energy-bar-wrap">
-          <div class="energy-label">Energy level</div>
-          <div class="energy-track"><div class="energy-fill"></div></div>
-        </div>
-      </div>
-      <div class="phase-col o">
-        <div class="phase-indicator"></div>
-        <div class="phase-num">PHASE 03 / 11%</div>
-        <div class="phase-name">Ovulatory</div>
-        <div class="phase-days-tag">Day 14–16</div>
-        <p class="phase-desc-txt">Estrogen peaks. Your strongest window. Push hard — PRs, max effort, competition days.</p>
-        <div class="energy-bar-wrap">
-          <div class="energy-label">Energy level</div>
-          <div class="energy-track"><div class="energy-fill"></div></div>
-        </div>
-      </div>
-      <div class="phase-col l">
-        <div class="phase-indicator"></div>
-        <div class="phase-num">PHASE 04 / 43%</div>
-        <div class="phase-name">Luteal</div>
-        <div class="phase-days-tag">Day 17–28</div>
-        <p class="phase-desc-txt">Progesterone rises. Fuel more, moderate intensity, focus on technique over max output.</p>
-        <div class="energy-bar-wrap">
-          <div class="energy-label">Energy level</div>
-          <div class="energy-track"><div class="energy-fill"></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ATHLETE SECTION -->
-<div class="athlete-section">
-  <div class="athlete-img-col">
-    <img class="athlete-img"
-      src="https://images.unsplash.com/photo-1594381898411-846e7d193883?w=900&q=85&auto=format&fit=crop&crop=top"
-      alt="Woman athlete training"
-      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-    <div class="athlete-overlay"></div>
-    <div class="athlete-img-tint"></div>
-    <div class="no-img-placeholder" style="display:none">
-      <svg width="160" height="240" viewBox="0 0 160 240" fill="none" style="opacity:0.1">
-        <circle cx="80" cy="32" r="20" stroke="white" stroke-width="1.5"/>
-        <line x1="80" y1="52" x2="80" y2="130" stroke="white" stroke-width="1.5"/>
-        <line x1="80" y1="75" x2="44" y2="110" stroke="white" stroke-width="1.5"/>
-        <line x1="80" y1="75" x2="116" y2="110" stroke="white" stroke-width="1.5"/>
-        <line x1="80" y1="130" x2="56" y2="200" stroke="white" stroke-width="1.5"/>
-        <line x1="80" y1="130" x2="104" y2="200" stroke="white" stroke-width="1.5"/>
-        <line x1="10" y1="108" x2="150" y2="108" stroke="#E3EB92" stroke-width="1.5"/>
-      </svg>
-    </div>
-
-    <!-- Floating metrics -->
-    <div class="metric-float mf-1">
-      <div class="mf-val"><span class="acc">↑</span> 94<span style="font-size:14px;color:var(--fg-dim)">%</span></div>
-      <div class="mf-key">Readiness score</div>
-      <div class="mf-delta pos">+12% vs last week</div>
-    </div>
-    <div class="metric-float mf-2">
-      <div class="mf-val">Day <span class="acc">14</span></div>
-      <div class="mf-key">Ovulatory phase</div>
-      <div class="mf-delta pos">Peak window active</div>
-    </div>
-    <div class="metric-float mf-3">
-      <div class="mf-val" style="font-size:22px"><span class="acc">PR</span> ready</div>
-      <div class="mf-key">Estrogen at peak</div>
-      <div class="mf-delta pos">Best time to push</div>
-    </div>
-  </div>
-
-  <div class="athlete-text-col">
-    <div class="section-eyebrow reveal">Train with intelligence</div>
-    <h2 class="big-label reveal d1">Your body gives<br>you signals.<br><span style="color:var(--accent)">We decode them.</span></h2>
-    <p class="big-sub reveal d2">
-      Active people who menstruate deal with <em>real hormonal variability</em> every single week. CYCLEX turns that variability into a competitive edge.
-    </p>
-    <div class="checklist">
-      <div class="check-item reveal d1">
-        <div class="check-dot"><svg width="10" height="8" viewBox="0 0 10 8"><polyline points="1,4 4,7 9,1" stroke="#E3EB92" stroke-width="1.5" fill="none"/></svg></div>
-        <p class="check-txt"><strong style="color:var(--fg-dim);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">Phase-matched workouts</strong>strength, cardio, and recovery timed to your hormonal window</p>
-      </div>
-      <div class="check-item reveal d2">
-        <div class="check-dot"><svg width="10" height="8" viewBox="0 0 10 8"><polyline points="1,4 4,7 9,1" stroke="#E3EB92" stroke-width="1.5" fill="none"/></svg></div>
-        <p class="check-txt"><strong style="color:var(--fg-dim);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">Nutrition guidance</strong>what to eat when, based on what your hormones need</p>
-      </div>
-      <div class="check-item reveal d3">
-        <div class="check-dot"><svg width="10" height="8" viewBox="0 0 10 8"><polyline points="1,4 4,7 9,1" stroke="#E3EB92" stroke-width="1.5" fill="none"/></svg></div>
-        <p class="check-txt"><strong style="color:var(--fg-dim);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">AI pattern recognition</strong>learns your body across cycles, not just days</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- FEATURES -->
-<section class="features-section" id="features">
-  <div class="features-inner">
-    <div class="features-header">
-      <div class="reveal-left">
-        <div class="section-eyebrow">3 Core Things</div>
-        <h2 class="features-title">Built to make you faster, stronger, smarter.</h2>
-      </div>
-      <p class="features-subtitle reveal-right">Daily recommendations built around your hormonal cycle — not despite it. Strength, cardio, recovery, nutrition. All phased.</p>
-    </div>
+  <!-- WHAT CYCLEX DOES -->
+  <section>
+    <p class="section-label">What CYCLEX Does</p>
+    <h2>Two tools.<br><em>One edge.</em></h2>
     <div class="features-grid">
-      <div class="feat-card reveal" data-num="01">
-        <div class="feat-num">01 /</div>
-        <div class="feat-icon-wrap">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <circle cx="9" cy="9" r="7" stroke="#E3EB92" stroke-width="1" opacity="0.7"/>
-            <circle cx="9" cy="9" r="3" fill="#E3EB92" opacity="0.5"/>
-            <line x1="9" y1="1" x2="9" y2="4" stroke="#E3EB92" stroke-width="1" opacity="0.5"/>
-            <line x1="9" y1="14" x2="9" y2="17" stroke="#E3EB92" stroke-width="1" opacity="0.5"/>
-            <line x1="1" y1="9" x2="4" y2="9" stroke="#E3EB92" stroke-width="1" opacity="0.5"/>
-            <line x1="14" y1="9" x2="17" y2="9" stroke="#E3EB92" stroke-width="1" opacity="0.5"/>
-          </svg>
-        </div>
-        <div class="feat-title">Know your phase.</div>
-        <p class="feat-body">Understand what's happening in your body and why it matters for performance. No guessing. No ignoring.</p>
+      <div class="feature-card accent">
+        <div class="feature-icon">⚡</div>
+        <h3>Intensity Adaptation</h3>
+        <p>CYCLEX reads your current hormonal phase and auto-adjusts the intensity, load, and volume of your existing sessions. Same program — optimized timing.</p>
       </div>
-      <div class="feat-card reveal d1" data-num="02">
-        <div class="feat-num">02 /</div>
-        <div class="feat-icon-wrap">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <polyline points="2,14 6,8 9,10 14,4 17,6" stroke="#E3EB92" stroke-width="1.2" fill="none" opacity="0.8"/>
-            <circle cx="14" cy="4" r="2.5" fill="#E3EB92" opacity="0.5"/>
-          </svg>
-        </div>
-        <div class="feat-title">Train smarter.</div>
-        <p class="feat-body">Daily recommendations built around your hormonal cycle — not despite it. Strength, cardio, recovery, nutrition.</p>
-      </div>
-      <div class="feat-card reveal d2" data-num="03">
-        <div class="feat-num">03 /</div>
-        <div class="feat-icon-wrap">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <rect x="2" y="12" width="3" height="5" fill="#E3EB92" opacity="0.3"/>
-            <rect x="7" y="8" width="3" height="9" fill="#E3EB92" opacity="0.55"/>
-            <rect x="12" y="4" width="3" height="13" fill="#E3EB92" opacity="0.8"/>
-          </svg>
-        </div>
-        <div class="feat-title">Spot your patterns.</div>
-        <p class="feat-body">AI that learns from your logs and surfaces what's actually happening over time — across cycles, not just days.</p>
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <h3>Session Reordering</h3>
+        <p>Your heavy compound day doesn't have to be Monday. CYCLEX reorders your weekly schedule so your hardest sessions land on your highest-output days.</p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- POSITIONING — bold and unmissable -->
-<div class="pos-section">
-  <div class="pos-glow"></div>
-  <div class="pos-inner">
-    <div class="pos-not-tag reveal">
-      <span class="strike-inner">This is not a period tracker.</span>
-    </div>
-    <div class="pos-main reveal d1">
-      <div class="dim-word">This is</div>
-      <div><span class="acc">performance</span></div>
-      <div>intelligence.</div>
-    </div>
-  </div>
-</div>
+  <div class="full-divider"></div>
 
-<!-- QUOTE -->
-<div class="quote-wrapper">
-  <div class="quote-section">
-    <div class="reveal-left">
-      <p class="quote-text">I always knew my cycle affected my training. I just didn't know how to use it.</p>
-      <div class="quote-attr">— Beta tester · CrossFit athlete</div>
-    </div>
-    <div class="reveal-right">
-      <div class="readiness-card">
-        <div class="rc-label">Training readiness · 28-day cycle</div>
-        <div class="rc-bars">
-          <div class="rc-bar" style="height:28%;background:oklch(0.6 0.18 10);opacity:0.5"></div>
-          <div class="rc-bar" style="height:32%;background:oklch(0.6 0.18 10);opacity:0.4"></div>
-          <div class="rc-bar" style="height:52%;background:#E3EB92;opacity:0.6"></div>
-          <div class="rc-bar" style="height:68%;background:#E3EB92;opacity:0.72"></div>
-          <div class="rc-bar" style="height:82%;background:#E3EB92;opacity:0.85"></div>
-          <div class="rc-bar" style="height:90%;background:#E3EB92"></div>
-          <div class="rc-bar" style="height:100%;background:oklch(0.75 0.18 195)"></div>
-          <div class="rc-bar" style="height:96%;background:oklch(0.75 0.18 195)"></div>
-          <div class="rc-bar" style="height:78%;background:oklch(0.6 0.12 280);opacity:0.8"></div>
-          <div class="rc-bar" style="height:65%;background:oklch(0.6 0.12 280);opacity:0.7"></div>
-          <div class="rc-bar" style="height:50%;background:oklch(0.6 0.12 280);opacity:0.55"></div>
-          <div class="rc-bar" style="height:34%;background:oklch(0.6 0.12 280);opacity:0.4"></div>
+  <!-- HOW IT WORKS -->
+  <section>
+    <p class="section-label">How It Works</p>
+    <h2>Four steps.<br><em>Zero friction.</em></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Connect your training app</h3>
+          <p>Import your existing program from any training app. CYCLEX works on top of what you already have — no need to rebuild your routine from scratch.</p>
         </div>
-        <div class="rc-phases">
-          <div class="rc-phase">Men</div>
-          <div class="rc-phase wide">Follicular</div>
-          <div class="rc-phase">Ov</div>
-          <div class="rc-phase wide">Luteal</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Log your cycle data</h3>
+          <p>Enter your last period date. That's it. CYCLEX calculates your current phase — follicular, ovulatory, luteal, or menstrual — and updates automatically.</p>
         </div>
-        <div class="rc-current">
-          <span class="rc-cur-label">Current readiness</span>
-          <span class="rc-cur-val">94%</span>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Get your adapted plan</h3>
+          <p>Every week, CYCLEX delivers an adjusted version of your program: modified loads and intensities, plus a reordered schedule optimized for your hormonal output.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h3>Track your results</h3>
+          <p>See how your performance correlates with your cycle over time. Identify your peak windows, your recovery needs, and your real training capacity — week by week.</p>
         </div>
       </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- CTA -->
-<section class="cta-section" id="cta">
-  <div class="cta-glow"></div>
-  <div class="cta-inner">
-    <p class="cta-eyebrow reveal">Early Access</p>
-    <h2 class="cta-title reveal d1">Be the first to train with your biology.</h2>
-    <p class="cta-sub reveal d2">Join the waitlist — free, no spam, early access.</p>
-    <div class="reveal d3">
-      <div class="cta-row" id="cta-form">
-        <input class="cta-input" type="email" id="cta-email" placeholder="your@email.com">
-        <button class="btn-primary" onclick="handleCtaSubmit()">Join Waitlist</button>
+  <div class="full-divider"></div>
+
+  <!-- MOCKUPS -->
+  <section class="mockups-section">
+    <p class="section-label">The App</p>
+    <h2>Built for<br><em>athletes.</em></h2>
+    <div class="mockups-grid">
+      <div class="mockup-frame">
+        <div class="mockup-screen">
+          <div class="mockup-phase">Follicular Phase · Day 8</div>
+          <div class="mockup-big">94<span style="font-size:20px;color:var(--fg-muted)">%</span></div>
+          <div class="mockup-label">Output capacity<br>today</div>
+          <div class="mockup-bar"><div class="mockup-bar-fill" style="width:94%"></div></div>
+          <div class="mockup-tag">↑ High Output</div>
+        </div>
       </div>
-      <p class="cta-note" id="cta-note">Free · No spam · Early access</p>
-      <p class="success-msg" id="cta-success">✓ You're on the list. We'll be in touch.</p>
+      <div class="mockup-frame active">
+        <div class="mockup-screen">
+          <div class="mockup-phase">Today's Session</div>
+          <div style="font-size:14px;font-weight:700;letter-spacing:-0.01em;text-align:center;line-height:1.4;">Back Squat<br><span style="color:var(--accent);font-size:22px;font-weight:900;">85kg × 5</span></div>
+          <div class="mockup-label">Adjusted from 80kg<br>based on phase</div>
+          <div class="mockup-tag">↑ +6% Load</div>
+        </div>
+      </div>
+      <div class="mockup-frame">
+        <div class="mockup-screen">
+          <div class="mockup-phase">Week Plan</div>
+          <div style="width:100%;display:flex;flex-direction:column;gap:8px;font-size:11px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span>MON</span><span style="color:var(--accent);font-weight:700;">Heavy Compounds</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span>TUE</span><span style="color:var(--fg-muted)">Accessory</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span>WED</span><span style="color:var(--fg-muted)">Rest</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span>THU</span><span style="color:var(--accent);font-weight:700;">Power</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span>FRI</span><span style="color:var(--fg-muted)">Mobility</span></div>
+          </div>
+          <div class="mockup-tag">Reordered ↻</div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">CYCLEX</div>
-  <div class="footer-meta">Built for athletes who menstruate · © 2026</div>
-</footer>
+  <div class="full-divider"></div>
 
-<script>
-  // Hero connector lines
-  function drawConnectors() {
-    const section = document.getElementById('hero-section');
-    if (!section) return;
-    const sr = section.getBoundingClientRect();
-    const content = document.querySelector('.hero-content');
-    if (!content) return;
-    const cr = content.getBoundingClientRect();
-    const cx = cr.left + cr.width / 2 - sr.left;
-    const cy = cr.top + cr.height / 2 - sr.top;
-    const svg = document.getElementById('hero-svg');
-    svg.setAttribute('viewBox', `0 0 ${sr.width} ${sr.height}`);
-    ['fp1','fp2','fp3'].forEach((id, i) => {
-      const pill = document.getElementById(id);
-      if (!pill) return;
-      const pr = pill.getBoundingClientRect();
-      const px = pr.left + pr.width / 2 - sr.left;
-      const py = pr.top + pr.height / 2 - sr.top;
-      const dx = cx - px, dy = cy - py;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      const ux = dx/dist, uy = dy/dist;
-      const line = document.getElementById('conn-' + (i+1));
-      line.setAttribute('x1', px + ux * 20);
-      line.setAttribute('y1', py + uy * 20);
-      line.setAttribute('x2', cx - ux * 130);
-      line.setAttribute('y2', cy - uy * 130);
-    });
-  }
-  window.addEventListener('load', () => setTimeout(drawConnectors, 300));
-  window.addEventListener('resize', drawConnectors);
+  <!-- POSITIONING -->
+  <section style="padding-top: 80px; padding-bottom: 80px;">
+    <div class="positioning-block">
+      <p class="positioning-eyebrow">Positioning</p>
+      <p class="positioning-statement">This is not a period tracker.<br><em>This is performance intelligence.</em></p>
+      <p class="positioning-sub">CYCLEX doesn't care about your mood or your cravings. It cares about your output. Built for women who train seriously and want data that actually matters.</p>
+    </div>
+  </section>
 
-  // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+  <div class="full-divider"></div>
 
-  function handleHeroSubmit() {
-    const email = document.getElementById('hero-email').value;
-    if (!email.includes('@')) { document.getElementById('hero-email').style.borderColor = 'oklch(0.6 0.18 10)'; return; }
-    document.getElementById('hero-form').style.display = 'none';
-    document.getElementById('hero-success').style.display = 'block';
-  }
-  function handleCtaSubmit() {
-    const email = document.getElementById('cta-email').value;
-    if (!email.includes('@')) { document.getElementById('cta-email').style.borderColor = 'oklch(0.6 0.18 10)'; return; }
-    document.getElementById('cta-form').style.display = 'none';
-    document.getElementById('cta-note').style.display = 'none';
-    document.getElementById('cta-success').style.display = 'block';
-  }
+  <!-- TESTIMONIAL -->
+  <section>
+    <p class="section-label">Beta Feedback</p>
+    <div class="testimonial-block">
+      <p class="testimonial-quote">I've been training for 6 years and this is the first app that didn't treat me like a man with a subscription to Flo. My PRs in the last 8 weeks have been insane.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">S</div>
+        <div class="author-info">
+          <span>Sara M.</span>
+          <span>Beta Tester · Powerlifter · 4 years lifting</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"accentColor":"#E3EB92","heroSize":140,"darkMode":true}/*EDITMODE-END*/;
-  window.addEventListener('message', (e) => {
-    if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel').style.display = 'block';
-    if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').style.display = 'none';
-  });
-  window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+  <div class="full-divider"></div>
 
-  // Parallax orbs — shift on scroll
-  (function() {
-    const orbs = [
-      { el: document.getElementById('orb1'), speedX: 0.04, speedY: 0.18 },
-      { el: document.getElementById('orb2'), speedX: -0.06, speedY: 0.12 },
-      { el: document.getElementById('orb3'), speedX: 0.05, speedY: 0.22 },
-      { el: document.getElementById('orb4'), speedX: -0.04, speedY: 0.16 },
-    ];
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const sy = window.scrollY;
-          orbs.forEach(({ el, speedX, speedY }) => {
-            if (el) el.style.transform = `translate(${sy * speedX}px, ${sy * speedY}px)`;
-          });
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }, { passive: true });
-  })();
-</script>
+  <!-- FINAL CTA -->
+  <section class="final-cta" id="waitlist" style="max-width:100%;">
+    <p class="section-label">Early Access</p>
+    <h2>Your biology<br>is your <em>advantage.</em></h2>
+    <form class="waitlist-form" id="waitlist-form" onsubmit="handleSubmit(event, 'waitlist-form')" style="margin-top:48px;">
+      <input type="email" placeholder="your@email.com" required>
+      <button type="submit">Join Waitlist</button>
+    </form>
+    <p class="final-note">Free during beta. No credit card required.</p>
+    <div class="spots-badge"><span>247</span> athletes already on the list</div>
+  </section>
 
-<div id="tweaks-panel" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9999;background:#111113;border:1px solid rgba(240,239,232,0.12);padding:20px;min-width:220px;font-family:'Space Grotesk',sans-serif;">
-  <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(240,239,232,0.5);margin-bottom:16px;">Tweaks</div>
-  <label style="display:block;font-size:12px;color:rgba(240,239,232,0.65);margin-bottom:8px;">Accent color</label>
-  <div style="display:flex;gap:8px;margin-bottom:20px;">
-    <div onclick="setAccent('#E3EB92')" style="width:24px;height:24px;background:#E3EB92;cursor:pointer;outline:2px solid rgba(240,239,232,0.4)"></div>
-    <div onclick="setAccent('oklch(0.75 0.18 195)')" style="width:24px;height:24px;background:oklch(0.75 0.18 195);cursor:pointer"></div>
-    <div onclick="setAccent('oklch(0.75 0.16 50)')" style="width:24px;height:24px;background:oklch(0.75 0.16 50);cursor:pointer"></div>
-    <div onclick="setAccent('oklch(0.78 0.14 340)')" style="width:24px;height:24px;background:oklch(0.78 0.14 340);cursor:pointer"></div>
-  </div>
-  <label style="display:block;font-size:12px;color:rgba(240,239,232,0.65);margin-bottom:8px;">Text brightness</label>
-  <input type="range" min="40" max="90" value="70" style="width:100%;margin-bottom:16px;" oninput="setTextOpacity(this.value)">
-  <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(240,239,232,0.65);cursor:pointer;">
-    <input type="checkbox" checked onchange="toggleOrbs(this.checked)"> Animated orbs
-  </label>
-</div>
-<script>
-  function setAccent(c) {
-    document.documentElement.style.setProperty('--accent', c);
-    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accentColor: c } }, '*');
-  }
-  function setTextOpacity(val) {
-    document.documentElement.style.setProperty('--fg-muted', `rgba(240,239,232,${val/100})`);
-  }
-  function toggleOrbs(on) {
-    document.querySelectorAll('.orb').forEach(o => o.style.display = on ? 'block' : 'none');
-  }
-</script>
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo">CYCLEX</div>
+    <p>© 2025 CYCLEX. Train with your biology.</p>
+  </footer>
+
+  <script>
+    function handleSubmit(e, formId) {
+      e.preventDefault();
+      const form = document.getElementById(formId);
+      const input = form.querySelector('input[type="email"]');
+      const btn = form.querySelector('button');
+      btn.textContent = '✓ You're on the list';
+      btn.style.background = '#fff';
+      btn.style.color = '#000';
+      input.disabled = true;
+      btn.disabled = true;
+    }
+  </script>
+
 </body>
 </html>
